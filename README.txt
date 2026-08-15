@@ -1,17 +1,14 @@
-# Alerta Sísmica JABM — versión con selección de países
+ALERTA SÍSMICA JABM — VERSIÓN SOS + MÁS
 
-Archivos para subir al repositorio GitHub Pages:
-- `index.html` — aplicación actualizada.
-- `manifest.json` — configuración PWA.
-- `icon-512.png` — icono de la app.
+Actualización:
+- S.O.S. dentro de la app con selección de país.
+- Contactos de emergencia con botón "Llamar".
+- México, Nicaragua, Costa Rica, EE.UU., Guatemala, El Salvador, Honduras,
+  Colombia, Chile, Japón, Indonesia, Perú y Ecuador incluidos.
+- Sección "Más" con fuentes de datos y creador.
+- Creador: Juan Antonio Barron Maciel, Ciudad de México.
+- Datos sísmicos: USGS Earthquake Hazards Program / feeds GeoJSON.
 
-Cambios principales:
-- Magnitud mínima desde M3+ hasta M8+.
-- Selección de uno o varios países.
-- Botón “Todos” y “Limpiar”.
-- Buscador de países.
-- La selección se guarda en el iPhone con localStorage.
-- Los eventos y avisos dentro de la página respetan la magnitud y los países seleccionados.
-- Los detalles del evento muestran magnitud, ubicación, latitud, longitud, profundidad, tipo de magnitud, tsunami/alerta cuando USGS los reporta y enlace al evento.
-
-Nota: esta versión todavía genera avisos del navegador mientras la página está abierta. Las notificaciones Push con la app cerrada requieren configurar el servicio Push/backend en un siguiente paso.
+IMPORTANTE:
+Verifica los números oficiales del país antes de depender de ellos en una emergencia.
+La información sísmica no es una predicción de terremotos.

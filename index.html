@@ -21,6 +21,14 @@ main{padding:18px}.hero{border:1px solid #173b5c;border-radius:26px;background:l
 .modal{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.74);display:none;align-items:flex-end}.modal.open{display:flex}.modalBox{width:min(760px,100%);max-height:90vh;overflow:auto;background:#071321;border:1px solid #23425d;border-radius:24px 24px 0 0;padding:18px;box-shadow:0 -20px 60px rgba(0,0,0,.5)}.modalHead{display:flex;justify-content:space-between;align-items:center;gap:10px}.modalHead h2{margin:0;font-size:21px}.close{width:40px;height:40px;border-radius:50%;border:1px solid #294966;background:#0a1a2a;color:#fff;font-size:22px}.detailHero{border:1px solid rgba(255,77,95,.28);background:linear-gradient(135deg,rgba(255,77,95,.12),rgba(7,19,33,.7));border-radius:17px;padding:15px;margin:14px 0}.detailTop{display:flex;align-items:center;gap:12px}.detailMag{font-size:31px;font-weight:950;color:var(--red)}.detailPlace{font-weight:800}.detailTime{font-size:11px;color:var(--muted);margin-top:3px}.detailGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.detailCell{background:#091a2b;border:1px solid #17344d;border-radius:12px;padding:11px}.detailCell small{display:block;color:var(--muted);font-size:10px}.detailCell strong{display:block;margin-top:5px;font-size:13px}.detailSection{margin-top:12px;border:1px solid #17344d;border-radius:15px;padding:13px}.detailSection h3{font-size:13px;margin:0 0 10px}.detailList{display:grid;grid-template-columns:1fr 1fr;gap:8px;color:#d7e4ed;font-size:12px}.detailList div{display:flex;justify-content:space-between;gap:10px}.detailList span{color:var(--muted)}.modalActions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.actionBtn{min-height:45px;border-radius:12px;border:1px solid #27506e;background:#091a2b;color:#fff;font-weight:800;text-decoration:none;display:grid;place-items:center;font-size:12px}.actionBtn.primary{border:0;background:linear-gradient(135deg,#2b9cff,#1677dc);color:#fff;box-shadow:none}
 .toast{position:fixed;z-index:120;left:50%;bottom:90px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#102235;border:1px solid #2d5573;color:#fff;border-radius:14px;padding:11px 14px;font-size:12px;transition:.2s;box-shadow:var(--shadow)}.toast.show{opacity:1;transform:translate(-50%,0)}
 @media(max-width:650px){main{padding:14px}.hero{padding:18px}.hero h2{font-size:27px}.heroRow{align-items:flex-start;flex-direction:column}.stats{gap:7px}.stat{min-height:96px;padding:12px 8px}.stat b{font-size:27px}.filtersGrid{grid-template-columns:1fr}.countryPanel{grid-column:auto}.countryList{grid-template-columns:1fr}.detailGrid{grid-template-columns:repeat(2,1fr)}.detailList{grid-template-columns:1fr}.event{grid-template-columns:auto 1fr auto}.brandText h1{font-size:19px}}
+
+.sos-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+.sos-card{background:linear-gradient(145deg,#0c2638,#071a2a);border:1px solid #24536b;border-radius:18px;padding:15px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.sos-card .label{font-weight:700}.sos-card .number{color:#a9d8eb;font-size:13px;margin-top:3px}
+.sos-call{display:inline-flex;align-items:center;justify-content:center;min-width:90px;min-height:44px;border-radius:13px;background:#19a974;color:white;text-decoration:none;font-weight:800}
+.about-box{background:linear-gradient(145deg,#0c2638,#071a2a);border:1px solid #24536b;border-radius:18px;padding:17px;line-height:1.55}
+.about-box h3{margin-top:0}.about-box hr{border:0;border-top:1px solid #24536b;margin:16px 0}
+@media(max-width:600px){.sos-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -60,6 +68,33 @@ main{padding:18px}.hero{border:1px solid #173b5c;border-radius:26px;background:l
   <div class="sectionTitle"><h2>🌐 Eventos recientes</h2><button class="linkBtn" id="showAll">Ver todos →</button></div>
   <section class="events" id="events"><div class="empty">Cargando datos USGS…</div></section><div id="refresh" class="refresh"></div>
   <p class="hint" style="text-align:center">Fuente: USGS Earthquake Catalog / GeoJSON Feed. Los datos pueden revisarse después del primer reporte.</p>
+
+<section class="card" id="sosPanel">
+  <h2>🚨 S.O.S. — Emergencias por país</h2>
+  <div class="controls">
+    <div class="control">
+      <label>🌎 Selecciona el país</label>
+      <select id="sosCountry"></select>
+    </div>
+  </div>
+  <div id="sosContacts" class="sos-grid"></div>
+  <div class="note">Los números de emergencia se muestran según fuentes oficiales disponibles. Si existe un número único nacional, se usa para policía, bomberos, atención médica y protección civil.</div>
+</section>
+
+<section class="card" id="masPanel">
+  <h2>ℹ️ Más</h2>
+  <div class="about-box">
+    <h3>Alerta Sísmica JABM</h3>
+    <p><strong>Creador:</strong> Juan Antonio Barron Maciel</p>
+    <p><strong>Ciudad:</strong> Ciudad de México, México</p>
+    <hr>
+    <h3>📡 Fuentes de datos</h3>
+    <p>Los datos sísmicos en tiempo real utilizados por la aplicación provienen principalmente del <strong>U.S. Geological Survey (USGS) Earthquake Hazards Program</strong>, mediante sus feeds GeoJSON/servicios de datos sísmicos.</p>
+    <p>Los feeds de USGS proporcionan, entre otros campos, magnitud, hora, latitud, longitud, profundidad, tipo de magnitud, ubicación e identificador del evento. citeturn0search15</p>
+    <p>USGS indica que sus feeds se actualizan aproximadamente cada minuto y ofrece servicios de datos para aplicaciones. citeturn0search0turn0search7</p>
+    <p><strong>Nota:</strong> Alerta Sísmica JABM muestra información reportada por estas fuentes y no predice terremotos.</p>
+  </div>
+</section>
 </main>
 
 <nav class="bottomNav"><button class="navBtn active"><span>⌂</span>Inicio</button><button class="navBtn" id="navAlerts"><span>♧</span>S.O.S.</button><button class="navBtn" id="navMore"><span>•••</span>Más</button></nav>
@@ -110,6 +145,65 @@ $("savePrefs").addEventListener("click",savePrefs);
 $("notifyToggle").addEventListener("click",toggleNotifications);$("topNotify").addEventListener("click",()=>{document.getElementById("filtersCard").scrollIntoView({behavior:"smooth"});});$("heroAlerts").addEventListener("click",()=>document.getElementById("filtersCard").scrollIntoView({behavior:"smooth"}));$("navAlerts").addEventListener("click",()=>document.getElementById("filtersCard").scrollIntoView({behavior:"smooth"}));$("navMore").addEventListener("click",()=>toast("Selecciona un evento para ver todos sus datos."));
 $("stat45").addEventListener("click",()=>openStat(4.5,"Eventos M4.5+ · 24 h"));$("stat6").addEventListener("click",()=>openStat(6,"Eventos M6+ · 24 h"));$("stat7").addEventListener("click",()=>openStat(7,"Eventos M7+ · 24 h"));$("showAll").addEventListener("click",()=>openStat(Number($("mag").value),`Eventos M${$("mag").value}+ · 24 h`));$("closeModal").addEventListener("click",closeModal);$("detailModal").addEventListener("click",e=>{if(e.target===$("detailModal"))closeModal();});document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
 renderCountries();updateCountrySummary();syncNotifyUI();load();setInterval(load,60000);
+
+const sosData = {
+  mx: {
+    name:"🇲🇽 México",
+    contacts:[
+      ["🚨 Emergencias","911","911"],
+      ["👮 Policía","911","911"],
+      ["🚒 Bomberos","911","911"],
+      ["🚑 Emergencias médicas","911","911"],
+      ["🛡️ Protección Civil","911","911"]
+    ]
+  },
+  ni: {
+    name:"🇳🇮 Nicaragua",
+    contacts:[
+      ["🚨 Centro de Emergencias","118","118"],
+      ["👮 Policía Nacional","118","118"],
+      ["🚒 Bomberos Unificados","115","115"]
+    ]
+  },
+  cr: {
+    name:"🇨🇷 Costa Rica",
+    contacts:[
+      ["🚨 Emergencias","911","911"],
+      ["👮 Policía","911","911"],
+      ["🚒 Bomberos","911","911"],
+      ["🚑 Emergencias médicas","911","911"]
+    ]
+  },
+  us: {
+    name:"🇺🇸 Estados Unidos",
+    contacts:[
+      ["🚨 Emergencias","911","911"],
+      ["👮 Policía","911","911"],
+      ["🚒 Bomberos","911","911"],
+      ["🚑 Emergencias médicas","911","911"]
+    ]
+  },
+  gt: {name:"🇬🇹 Guatemala",contacts:[["🚨 Emergencias","110","110"],["👮 Policía","110","110"],["🚒 Bomberos","122","122"]]},
+  sv: {name:"🇸🇻 El Salvador",contacts:[["🚨 Emergencias","911","911"],["👮 Policía","911","911"],["🚒 Bomberos","913","913"]]},
+  hn: {name:"🇭🇳 Honduras",contacts:[["🚨 Emergencias","911","911"],["👮 Policía","911","911"],["🚒 Bomberos","198","198"]]},
+  co: {name:"🇨🇴 Colombia",contacts:[["🚨 Emergencias","123","123"],["👮 Policía","123","123"],["🚒 Bomberos","123","123"],["🚑 Emergencias médicas","123","123"]]},
+  cl: {name:"🇨🇱 Chile",contacts:[["🚨 Emergencias","133","133"],["👮 Carabineros","133","133"],["🚒 Bomberos","132","132"],["🚑 Ambulancia","131","131"]]},
+  jp: {name:"🇯🇵 Japón",contacts:[["🚨 Emergencias","110 / 119","110"],["👮 Policía","110","110"],["🚒 Bomberos / Ambulancia","119","119"]]},
+  id: {name:"🇮🇩 Indonesia",contacts:[["🚨 Emergencias","112","112"],["👮 Policía","110","110"],["🚒 Bomberos","113","113"]]},
+  pe: {name:"🇵🇪 Perú",contacts:[["🚨 Emergencias","911 / 105 / 116","911"],["👮 Policía","105","105"],["🚒 Bomberos","116","116"]]},
+  ec: {name:"🇪🇨 Ecuador",contacts:[["🚨 Emergencias","911","911"],["👮 Policía","911","911"],["🚒 Bomberos","911","911"],["🚑 Emergencias médicas","911","911"]]}
+};
+function initSOS(){
+ const sel=document.getElementById("sosCountry"); if(!sel)return;
+ sel.innerHTML=Object.entries(sosData).map(([k,v])=>`<option value="${k}">${v.name}</option>`).join("");
+ renderSOS();
+ sel.addEventListener("change",renderSOS);
+}
+function renderSOS(){
+ const sel=document.getElementById("sosCountry"), box=document.getElementById("sosContacts"); if(!sel||!box)return;
+ const d=sosData[sel.value]; box.innerHTML=d.contacts.map(c=>`<div class="sos-card"><div><div class="label">${c[0]}</div><div class="number">${c[1]}</div></div><a class="sos-call" href="tel:${c[2]}">📞 Llamar</a></div>`).join("");
+}
+initSOS();
 </script>
 </body>
 </html>
