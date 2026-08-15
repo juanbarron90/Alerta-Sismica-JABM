@@ -5,18 +5,20 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#071b2a">
 <link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-512.png">
 <title>Alerta Sísmica JABM</title>
 <style>
 :root{--bg:#061725;--panel:#0c2233;--panel2:#081b2a;--line:#17425d;--text:#f4f7fa;--muted:#9eb3c3;--accent:#2384b5;--danger:#ef5350;--warn:#ff9f1c;--ok:#46c36a}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 header{text-align:center;padding:34px 18px 28px;background:#071b2a}header h1{font-size:32px;margin:0 0 12px}header p{margin:0;color:var(--muted);font-size:16px}
-main{max-width:900px;margin:auto;padding:18px 16px 50px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;background:var(--panel);border:2px solid var(--line);border-radius:24px;padding:12px;margin-bottom:16px}.stat{background:var(--panel2);border-radius:18px;text-align:center;padding:16px 6px}.stat b{display:block;font-size:29px}.stat span{color:var(--muted);font-size:14px}
+main{max-width:900px;margin:auto;padding:18px 16px 50px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;background:var(--panel);border:2px solid var(--line);border-radius:24px;padding:12px;margin-bottom:16px}.stat{appearance:none;width:100%;border:0;color:var(--text);background:var(--panel2);border-radius:18px;text-align:center;padding:16px 6px;font:inherit;cursor:pointer}.stat:active{transform:scale(.98)}.stat b{display:block;font-size:29px}.stat span{color:var(--muted);font-size:14px}
 .card{background:var(--panel);border:2px solid var(--line);border-radius:24px;padding:22px;margin-bottom:16px}.card h2{margin:0 0 18px;font-size:25px}
 .controls{display:grid;grid-template-columns:1fr 1fr;gap:12px}.control label{display:block;color:var(--muted);font-size:13px;margin:0 0 6px}.control select,.control button{width:100%;min-height:54px;border-radius:16px;border:2px solid #22536f;background:#071b2a;color:var(--text);padding:0 14px;font-size:17px}
 button{font-weight:700;cursor:pointer}.notify{margin-top:12px;background:#2183b3;border-color:#2183b3!important}.notify.active{background:#237b45;border-color:#237b45!important}
 .note{color:var(--muted);font-size:13px;line-height:1.45;margin-top:12px}.signal{display:flex;gap:12px;align-items:flex-start}.dot{width:18px;height:18px;border-radius:50%;background:var(--warn);margin-top:5px;box-shadow:0 0 14px #ff9f1c}
-.event{border-top:1px solid #1b4258;padding:16px 0}.event:first-child{border-top:0}.event h3{margin:0 0 8px;font-size:18px}.chips{display:flex;flex-wrap:wrap;gap:7px;margin:9px 0}.chip{background:#071b2a;border:1px solid #24536b;border-radius:999px;padding:6px 9px;font-size:13px;color:#d7e4ec}.m{font-size:22px;font-weight:800}.m7{color:#ff6b61}.m6{color:#ffb347}.m5{color:#ffd166}.detail{color:var(--muted);font-size:14px;line-height:1.55}.event a{color:#72c9ff;text-decoration:none;font-weight:600}
+.event{border-top:1px solid #1b4258;padding:16px 0}.event:first-child{border-top:0}.event h3{margin:0 0 8px;font-size:18px}.chips{display:flex;flex-wrap:wrap;gap:7px;margin:9px 0}.chip{background:#071b2a;border:1px solid #24536b;border-radius:999px;padding:6px 9px;font-size:13px;color:#d7e4ec}.m{font-size:22px;font-weight:800}.m8{color:#ff4d5e}.m7{color:#ff6b61}.m6{color:#ffb347}.m5{color:#ffd166}.m4{color:#b9d8ff}.detail{color:var(--muted);font-size:14px;line-height:1.55}.event a{color:#72c9ff;text-decoration:none;font-weight:600}
 .empty{color:var(--muted);text-align:center;padding:20px 0}.refresh{font-size:13px;color:var(--muted);text-align:center;margin:10px}.footer{color:#7891a3;font-size:12px;text-align:center;line-height:1.5}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:flex-end;justify-content:center;z-index:50;padding:0}.modal.open{display:flex}.modalbox{width:min(900px,100%);max-height:88vh;overflow:auto;background:var(--panel);border:2px solid var(--line);border-radius:26px 26px 0 0;padding:20px 18px 30px;box-shadow:0 -10px 40px rgba(0,0,0,.35)}.modalhead{display:flex;align-items:center;justify-content:space-between;gap:12px}.modalhead h2{margin:0;font-size:23px}.close{width:44px;height:44px;border-radius:50%;border:2px solid #2b5870;background:#071b2a;color:#fff;font-size:24px}.summary{color:var(--muted);margin:8px 0 14px}.countryHint{margin-top:8px;font-size:12px;color:var(--muted)}
 @media(max-width:600px){.stats{gap:7px}.stat{padding:13px 3px}.stat b{font-size:25px}.controls{grid-template-columns:1fr}header h1{font-size:29px}}
 </style>
 </head>
@@ -27,9 +29,9 @@ button{font-weight:700;cursor:pointer}.notify{margin-top:12px;background:#2183b3
 </header>
 <main>
 <section class="stats">
-<div class="stat"><b id="count45">—</b><span>M4.5+ · 24 h</span></div>
-<div class="stat"><b id="count6">—</b><span>M6+ · 24 h</span></div>
-<div class="stat"><b id="count7">—</b><span>M7+ · 24 h</span></div>
+<button class="stat" id="stat45" type="button"><b id="count45">—</b><span>M4.5+ · 24 h<br><small>Tocar para ver eventos</small></span></button>
+<button class="stat" id="stat6" type="button"><b id="count6">—</b><span>M6+ · 24 h<br><small>Tocar para ver eventos</small></span></button>
+<button class="stat" id="stat7" type="button"><b id="count7">—</b><span>M7+ · 24 h<br><small>Tocar para ver eventos</small></span></button>
 </section>
 
 <section class="card">
@@ -37,12 +39,12 @@ button{font-weight:700;cursor:pointer}.notify{margin-top:12px;background:#2183b3
 <div class="controls">
 <div class="control"><label>Magnitud mínima</label>
 <select id="mag">
-<option value="4.5">M4.5+</option><option value="5">M5+</option><option value="6" selected>M6+</option><option value="7">M7+</option><option value="8">M8+</option>
+<option value="3">M3+</option><option value="3.5">M3.5+</option><option value="4">M4+</option><option value="4.5" selected>M4.5+</option><option value="5">M5+</option><option value="5.5">M5.5+</option><option value="6">M6+</option><option value="6.5">M6.5+</option><option value="7">M7+</option><option value="7.5">M7.5+</option><option value="8">M8+</option>
 </select></div>
-<div class="control"><label>Zona</label>
-<select id="region">
-<option value="world" selected>🌎 Mundo</option><option value="mexico">🇲🇽 México</option><option value="nicaragua">🇳🇮 Nicaragua</option><option value="central">🌎 Centroamérica</option><option value="caribbean">🌊 Caribe</option>
-</select></div>
+<div class="control"><label>Zona / país</label>
+<select id="region"></select>
+<div class="countryHint">Mundo muestra todos los países. El filtro usa la ubicación reportada por USGS.</div>
+</div>
 </div>
 <button id="notify" class="notify">🔔 Activar avisos mientras la app está abierta</button>
 <div class="note">Los avisos de esta versión se generan con terremotos reales reportados por USGS mientras esta página permanece abierta. No predicen terremotos. Para avisos con la app cerrada necesitaremos después un servicio de notificaciones push.</div>
@@ -50,7 +52,7 @@ button{font-weight:700;cursor:pointer}.notify{margin-top:12px;background:#2183b3
 
 <section class="card">
 <h2>📊 Señal experimental</h2>
-<div class="signal"><div class="dot"></div><div><div id="signalTitle">Actividad reciente elevada</div><div class="note">Esta señal resume actividad reciente según el filtro. <b>No predice</b> cuándo, dónde o con qué magnitud ocurrirá un terremoto.</div></div></div>
+<div class="signal"><div class="dot"></div><div><div id="signalTitle">Cargando actividad…</div><div class="note">Esta señal resume actividad reciente según el filtro. <b>No predice</b> cuándo, dónde o con qué magnitud ocurrirá un terremoto.</div></div></div>
 </section>
 
 <section class="card">
@@ -62,51 +64,88 @@ button{font-weight:700;cursor:pointer}.notify{margin-top:12px;background:#2183b3
 <div class="footer">Fuente: USGS Earthquake Catalog / GeoJSON Feed · La información puede actualizarse o revisarse después del primer reporte.</div>
 </main>
 
+<div class="modal" id="detailModal" aria-hidden="true">
+<div class="modalbox">
+<div class="modalhead"><h2 id="modalTitle">Eventos</h2><button class="close" id="closeModal" type="button" aria-label="Cerrar">×</button></div>
+<div class="summary" id="modalSummary"></div>
+<div id="modalEvents"></div>
+</div>
+</div>
+
 <script>
 const FEED="https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
 let allEvents=[]; let notified=new Set(); let notifications=false;
 
+const countries=[
+["world","🌎 Mundo",""],
+["afghanistan","🇦🇫 Afganistán","afghanistan"],["albania","🇦🇱 Albania","albania"],["algeria","🇩🇿 Argelia","algeria"],["andorra","🇦🇩 Andorra","andorra"],["angola","🇦🇴 Angola","angola"],["antigua","🇦🇬 Antigua y Barbuda","antigua"],["argentina","🇦🇷 Argentina","argentina"],["armenia","🇦🇲 Armenia","armenia"],["australia","🇦🇺 Australia","australia"],["austria","🇦🇹 Austria","austria"],["azerbaijan","🇦🇿 Azerbaiyán","azerbaijan"],["bahamas","🇧🇸 Bahamas","bahamas"],["bahrain","🇧🇭 Baréin","bahrain"],["bangladesh","🇧🇩 Bangladés","bangladesh"],["barbados","🇧🇧 Barbados","barbados"],["belarus","🇧🇾 Bielorrusia","belarus"],["belgium","🇧🇪 Bélgica","belgium"],["belize","🇧🇿 Belice","belize"],["benin","🇧🇯 Benín","benin"],["bhutan","🇧🇹 Bután","bhutan"],["bolivia","🇧🇴 Bolivia","bolivia"],["bosnia","🇧🇦 Bosnia y Herzegovina","bosnia|herzegovina"],["botswana","🇧🇼 Botsuana","botswana"],["brazil","🇧🇷 Brasil","brazil"],["brunei","🇧🇳 Brunéi","brunei"],["bulgaria","🇧🇬 Bulgaria","bulgaria"],["burkina","🇧🇫 Burkina Faso","burkina"],["burundi","🇧🇮 Burundi","burundi"],["cabo","🇨🇻 Cabo Verde","cabo|verde"],["cambodia","🇰🇭 Camboya","cambodia"],["cameroon","🇨🇲 Camerún","cameroon"],["canada","🇨🇦 Canadá","canada"],["car","🇨🇫 República Centroafricana","central african"],["chad","🇹🇩 Chad","chad"],["chile","🇨🇱 Chile","chile"],["china","🇨🇳 China","china"],["colombia","🇨🇴 Colombia","colombia"],["comoros","🇰🇲 Comoras","comoros"],["congo","🇨🇬 República del Congo","republic of the congo|congo"],["costarica","🇨🇷 Costa Rica","costa rica"],["croatia","🇭🇷 Croacia","croatia"],["cuba","🇨🇺 Cuba","cuba"],["cyprus","🇨🇾 Chipre","cyprus"],["czechia","🇨🇿 Chequia","czech|czechia"],["denmark","🇩🇰 Dinamarca","denmark"],["djibouti","🇩🇯 Yibuti","djibouti"],["dominica","🇩🇲 Dominica","dominica"],["dominican","🇩🇴 República Dominicana","dominican republic|dominican"],["ecuador","🇪🇨 Ecuador","ecuador"],["egypt","🇪🇬 Egipto","egypt"],["elsalvador","🇸🇻 El Salvador","el salvador"],["equatorial","🇬🇶 Guinea Ecuatorial","equatorial guinea"],["eritrea","🇪🇷 Eritrea","eritrea"],["estonia","🇪🇪 Estonia","estonia"],["eswatini","🇸🇿 Esuatini","eswatini|swaziland"],["ethiopia","🇪🇹 Etiopía","ethiopia"],["fiji","🇫🇯 Fiyi","fiji"],["finland","🇫🇮 Finlandia","finland"],["france","🇫🇷 Francia","france"],["gabon","🇬🇦 Gabón","gabon"],["gambia","🇬🇲 Gambia","gambia"],["georgia","🇬🇪 Georgia","georgia"],["germany","🇩🇪 Alemania","germany"],["ghana","🇬🇭 Ghana","ghana"],["greece","🇬🇷 Grecia","greece"],["grenada","🇬🇩 Granada","grenada"],["guatemala","🇬🇹 Guatemala","guatemala"],["guinea","🇬🇳 Guinea","guinea"],["guineabissau","🇬🇼 Guinea-Bisáu","guinea-bissau"],["guyana","🇬🇾 Guyana","guyana"],["haiti","🇭🇹 Haití","haiti"],["honduras","🇭🇳 Honduras","honduras"],["hungary","🇭🇺 Hungría","hungary"],["iceland","🇮🇸 Islandia","iceland"],["india","🇮🇳 India","india"],["indonesia","🇮🇩 Indonesia","indonesia"],["iran","🇮🇷 Irán","iran"],["iraq","🇮🇶 Irak","iraq"],["ireland","🇮🇪 Irlanda","ireland"],["israel","🇮🇱 Israel","israel"],["italy","🇮🇹 Italia","italy"],["jamaica","🇯🇲 Jamaica","jamaica"],["japan","🇯🇵 Japón","japan"],["jordan","🇯🇴 Jordania","jordan"],["kazakhstan","🇰🇿 Kazajistán","kazakhstan"],["kenya","🇰🇪 Kenia","kenya"],["kiribati","🇰🇮 Kiribati","kiribati"],["kuwait","🇰🇼 Kuwait","kuwait"],["kyrgyzstan","🇰🇬 Kirguistán","kyrgyzstan"],["laos","🇱🇦 Laos","laos"],["latvia","🇱🇻 Letonia","latvia"],["lebanon","🇱🇧 Líbano","lebanon"],["lesotho","🇱🇸 Lesoto","lesotho"],["liberia","🇱🇷 Liberia","liberia"],["libya","🇱🇾 Libia","libya"],["liechtenstein","🇱🇮 Liechtenstein","liechtenstein"],["lithuania","🇱🇹 Lituania","lithuania"],["luxembourg","🇱🇺 Luxemburgo","luxembourg"],["madagascar","🇲🇬 Madagascar","madagascar"],["malawi","🇲🇼 Malaui","malawi"],["malaysia","🇲🇾 Malasia","malaysia"],["maldives","🇲🇻 Maldivas","maldives"],["mali","🇲🇱 Malí","mali"],["malta","🇲🇹 Malta","malta"],["mauritania","🇲🇷 Mauritania","mauritania"],["mauritius","🇲🇺 Mauricio","mauritius"],["mexico","🇲🇽 México","mexico|méxico"],["micronesia","🇫🇲 Micronesia","micronesia"],["moldova","🇲🇩 Moldavia","moldova"],["monaco","🇲🇨 Mónaco","monaco"],["mongolia","🇲🇳 Mongolia","mongolia"],["montenegro","🇲🇪 Montenegro","montenegro"],["morocco","🇲🇦 Marruecos","morocco"],["mozambique","🇲🇿 Mozambique","mozambique"],["myanmar","🇲🇲 Myanmar","myanmar|burma"],["namibia","🇳🇦 Namibia","namibia"],["nauru","🇳🇷 Nauru","nauru"],["nepal","🇳🇵 Nepal","nepal"],["netherlands","🇳🇱 Países Bajos","netherlands"],["newzealand","🇳🇿 Nueva Zelanda","new zealand"],["nicaragua","🇳🇮 Nicaragua","nicaragua"],["niger","🇳🇪 Níger","niger"],["nigeria","🇳🇬 Nigeria","nigeria"],["northkorea","🇰🇵 Corea del Norte","north korea"],["northmacedonia","🇲🇰 Macedonia del Norte","north macedonia"],["norway","🇳🇴 Noruega","norway"],["oman","🇴🇲 Omán","oman"],["pakistan","🇵🇰 Pakistán","pakistan"],["palau","🇵🇼 Palaos","palau"],["panama","🇵🇦 Panamá","panama|panamá"],["papua","🇵🇬 Papúa Nueva Guinea","papua new guinea"],["paraguay","🇵🇾 Paraguay","paraguay"],["peru","🇵🇪 Perú","peru"],["philippines","🇵🇭 Filipinas","philippines"],["poland","🇵🇱 Polonia","poland"],["portugal","🇵🇹 Portugal","portugal"],["qatar","🇶🇦 Catar","qatar"],["romania","🇷🇴 Rumania","romania"],["russia","🇷🇺 Rusia","russia"],["rwanda","🇷🇼 Ruanda","rwanda"],["saintkitts","🇰🇳 San Cristóbal y Nieves","saint kitts"],["saintlucia","🇱🇨 Santa Lucía","saint lucia"],["saintvincent","🇻🇨 San Vicente y las Granadinas","saint vincent"],["samoa","🇼🇸 Samoa","samoa"],["sanmarino","🇸🇲 San Marino","san marino"],["saotome","🇸🇹 Santo Tomé y Príncipe","sao tome|são tomé"],["saudi","🇸🇦 Arabia Saudita","saudi arabia"],["senegal","🇸🇳 Senegal","senegal"],["serbia","🇷🇸 Serbia","serbia"],["seychelles","🇸🇨 Seychelles","seychelles"],["sierra","🇸🇱 Sierra Leona","sierra leone"],["singapore","🇸🇬 Singapur","singapore"],["slovakia","🇸🇰 Eslovaquia","slovakia"],["slovenia","🇸🇮 Eslovenia","slovenia"],["solomon","🇸🇧 Islas Salomón","solomon islands"],["somalia","🇸🇴 Somalia","somalia"],["southafrica","🇿🇦 Sudáfrica","south africa"],["southkorea","🇰🇷 Corea del Sur","south korea"],["southsudan","🇸🇸 Sudán del Sur","south sudan"],["spain","🇪🇸 España","spain"],["srilanka","🇱🇰 Sri Lanka","sri lanka"],["sudan","🇸🇩 Sudán","sudan"],["suriname","🇸🇷 Surinam","suriname"],["sweden","🇸🇪 Suecia","sweden"],["switzerland","🇨🇭 Suiza","switzerland"],["syria","🇸🇾 Siria","syria"],["taiwan","🇹🇼 Taiwán","taiwan"],["tajikistan","🇹🇯 Tayikistán","tajikistan"],["tanzania","🇹🇿 Tanzania","tanzania"],["thailand","🇹🇭 Tailandia","thailand"],["timorleste","🇹🇱 Timor-Leste","timor-leste"],["togo","🇹🇬 Togo","togo"],["tonga","🇹🇴 Tonga","tonga"],["trinidad","🇹🇹 Trinidad y Tobago","trinidad and tobago"],["tunisia","🇹🇳 Túnez","tunisia"],["turkey","🇹🇷 Turquía","turkey|türkiye"],["turkmenistan","🇹🇲 Turkmenistán","turkmenistan"],["tuvalu","🇹🇻 Tuvalu","tuvalu"],["uganda","🇺🇬 Uganda","uganda"],["ukraine","🇺🇦 Ucrania","ukraine"],["uae","🇦🇪 Emiratos Árabes Unidos","united arab emirates"],["uk","🇬🇧 Reino Unido","united kingdom|uk"],["usa","🇺🇸 Estados Unidos","united states|usa"],["uruguay","🇺🇾 Uruguay","uruguay"],["uzbekistan","🇺🇿 Uzbekistán","uzbekistan"],["vanuatu","🇻🇺 Vanuatu","vanuatu"],["vatican","🇻🇦 Ciudad del Vaticano","vatican"],["venezuela","🇻🇪 Venezuela","venezuela"],["vietnam","🇻🇳 Vietnam","vietnam"],["yemen","🇾🇪 Yemen","yemen"],["zambia","🇿🇲 Zambia","zambia"],["zimbabwe","🇿🇼 Zimbabue","zimbabwe"]
+];
+
 const $=id=>document.getElementById(id);
+
+function normalize(s){return String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");}
 function regionOK(place,region){
-  const p=(place||"").toLowerCase();
   if(region==="world") return true;
-  if(region==="mexico") return p.includes("mexico")||p.includes("méxico");
-  if(region==="nicaragua") return p.includes("nicaragua");
-  if(region==="central") return ["mexico","méxico","guatemala","belize","honduras","el salvador","nicaragua","costa rica","panama","panamá"].some(x=>p.includes(x));
-  if(region==="caribbean") return ["puerto rico","dominican","república dominicana","cuba","haiti","jamaica","caribbean","caribe"].some(x=>p.includes(x));
-  return true;
+  const p=normalize(place);
+  const item=countries.find(x=>x[0]===region);
+  if(!item) return true;
+  return item[2].split("|").some(x=>p.includes(normalize(x)));
 }
-function magClass(m){return m>=7?"m7":m>=6?"m6":"m5"}
+function magClass(m){return m>=8?"m8":m>=7?"m7":m>=6?"m6":m>=5?"m5":"m4"}
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function formatTime(t){return new Date(t).toLocaleString("es-MX",{dateStyle:"medium",timeStyle:"short"})}
-function render(){
+
+function eventHTML(e){
+  const p=e.properties||{}, c=e.geometry?.coordinates||[];
+  const [lon,lat,depth]=c; const m=p.mag;
+  return `<article class="event">
+    <h3><span class="m ${magClass(m)}">M${m==null?"?":Number(m).toFixed(1)}</span> · ${esc(p.place||"Ubicación no disponible")}</h3>
+    <div class="chips">
+      <span class="chip">📍 Lat ${Number(lat).toFixed(3)}°</span>
+      <span class="chip">🌐 Lon ${Number(lon).toFixed(3)}°</span>
+      <span class="chip">⬇️ Prof. ${Number(depth).toFixed(1)} km</span>
+      <span class="chip">📐 ${esc(p.magType||"magnitud")}</span>
+      ${p.tsunami?'<span class="chip">🌊 Posible tsunami</span>':""}
+      ${p.alert?`<span class="chip">⚠️ Alerta: ${esc(p.alert)}</span>`:""}
+    </div>
+    <div class="detail">🕒 ${formatTime(p.time)} · Actualizado ${formatTime(p.updated)}</div>
+    <a href="${esc(p.url)}" target="_blank" rel="noopener">Ver evento completo en USGS →</a>
+  </article>`;
+}
+
+function currentFiltered(){
   const min=parseFloat($("mag").value), reg=$("region").value;
-  const filtered=allEvents.filter(e=>(e.properties.mag??-99)>=min && regionOK(e.properties.place,reg))
+  return allEvents.filter(e=>(e.properties.mag??-99)>=min && regionOK(e.properties.place,reg))
     .sort((a,b)=>b.properties.time-a.properties.time);
-  $("events").innerHTML=filtered.length?filtered.slice(0,30).map(e=>{
-    const p=e.properties, c=e.geometry?.coordinates||[];
-    const [lon,lat,depth]=c; const m=p.mag;
-    return `<article class="event">
-      <h3><span class="m ${magClass(m)}">M${m?.toFixed(1)}</span> · ${esc(p.place||"Ubicación no disponible")}</h3>
-      <div class="chips">
-        <span class="chip">📍 Lat ${Number(lat).toFixed(3)}°</span>
-        <span class="chip">🌐 Lon ${Number(lon).toFixed(3)}°</span>
-        <span class="chip">⬇️ Prof. ${Number(depth).toFixed(1)} km</span>
-        <span class="chip">📐 ${esc(p.magType||"magnitud")}</span>
-        ${p.tsunami?'<span class="chip">🌊 Posible tsunami</span>':""}
-        ${p.alert?`<span class="chip">⚠️ Alert: ${esc(p.alert)}</span>`:""}
-      </div>
-      <div class="detail">🕒 ${formatTime(p.time)} · Actualizado ${formatTime(p.updated)}</div>
-      <a href="${esc(p.url)}" target="_blank" rel="noopener">Ver evento completo en USGS →</a>
-    </article>`;
-  }).join(""):`<div class="empty">No hay eventos para este filtro en las últimas 24 horas.</div>`;
-  const last24=allEvents.filter(e=>e.properties.mag>=4.5).length;
-  $("count45").textContent=last24;
+}
+
+function render(){
+  const filtered=currentFiltered();
+  $("events").innerHTML=filtered.length?filtered.slice(0,30).map(eventHTML).join("")
+    :`<div class="empty">No hay eventos para este filtro en las últimas 24 horas.</div>`;
+
+  $("count45").textContent=allEvents.filter(e=>e.properties.mag>=4.5).length;
   $("count6").textContent=allEvents.filter(e=>e.properties.mag>=6).length;
   $("count7").textContent=allEvents.filter(e=>e.properties.mag>=7).length;
-  const high=allEvents.filter(e=>e.properties.mag>=min).length;
+
+  const high=filtered.length;
   $("signalTitle").textContent=high>=5?"Actividad reciente elevada":high>=1?"Actividad reciente detectada":"Actividad reciente baja";
 }
+
+function openStat(min,title){
+  const events=allEvents.filter(e=>e.properties.mag>=min).sort((a,b)=>b.properties.time-a.properties.time);
+  $("modalTitle").textContent=title;
+  $("modalSummary").textContent=`${events.length} evento(s) reportado(s) por USGS en las últimas 24 horas.`;
+  $("modalEvents").innerHTML=events.length?events.slice(0,50).map(eventHTML).join(""):`<div class="empty">No hay eventos para este umbral.</div>`;
+  $("detailModal").classList.add("open");
+  $("detailModal").setAttribute("aria-hidden","false");
+}
+
+function closeModal(){
+  $("detailModal").classList.remove("open");
+  $("detailModal").setAttribute("aria-hidden","true");
+}
+
 async function load(){
   try{
     const r=await fetch(FEED,{cache:"no-store"}); if(!r.ok) throw new Error("HTTP "+r.status);
@@ -117,24 +156,48 @@ async function load(){
     $("events").innerHTML='<div class="empty">No se pudieron cargar los datos USGS. Revisa tu conexión y vuelve a intentar.</div>';
   }
 }
+
 function checkNotifications(){
   if(!notifications || !("Notification" in window) || Notification.permission!=="granted") return;
   const min=parseFloat($("mag").value), reg=$("region").value;
   allEvents.filter(e=>e.properties.mag>=min && regionOK(e.properties.place,reg)).forEach(e=>{
-    if(!notified.has(e.id)){notified.add(e.id);
-      new Notification(`🚨 Sismo M${e.properties.mag?.toFixed(1)}`,{body:`${e.properties.place||"Ubicación desconocida"} · Prof. ${e.geometry.coordinates[2].toFixed(1)} km`});
+    if(!notified.has(e.id)){
+      notified.add(e.id);
+      const depth=e.geometry?.coordinates?.[2];
+      new Notification(`🚨 Sismo M${e.properties.mag?.toFixed(1)}`,{
+        body:`${e.properties.place||"Ubicación desconocida"} · Prof. ${Number(depth).toFixed(1)} km`
+      });
     }
   });
 }
+
+function initCountries(){
+  $("region").innerHTML=countries.map(x=>`<option value="${x[0]}" ${x[0]==="world"?"selected":""}>${x[1]}</option>`).join("");
+}
+
 $("mag").addEventListener("change",()=>{render();checkNotifications()});
 $("region").addEventListener("change",()=>{render();checkNotifications()});
+$("stat45").addEventListener("click",()=>openStat(4.5,"📊 Eventos M4.5+ · 24 h"));
+$("stat6").addEventListener("click",()=>openStat(6,"📊 Eventos M6+ · 24 h"));
+$("stat7").addEventListener("click",()=>openStat(7,"📊 Eventos M7+ · 24 h"));
+$("closeModal").addEventListener("click",closeModal);
+$("detailModal").addEventListener("click",e=>{if(e.target===$("detailModal"))closeModal()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+
 $("notify").addEventListener("click",async()=>{
   if(!("Notification" in window)){alert("Este navegador no permite notificaciones.");return}
   const p=await Notification.requestPermission();
-  if(p==="granted"){notifications=true;$("notify").textContent="🔔 Avisos ACTIVADOS · cambia el filtro para definir el umbral";$("notify").classList.add("active");checkNotifications();}
-  else alert("Debes permitir las notificaciones en el navegador para activarlas.");
+  if(p==="granted"){
+    notifications=true;
+    $("notify").textContent="🔔 Avisos ACTIVADOS · cambia el filtro para definir el umbral";
+    $("notify").classList.add("active");
+    checkNotifications();
+  }else alert("Debes permitir las notificaciones en el navegador para activarlas.");
 });
-load(); setInterval(load,60000);
+
+initCountries();
+load();
+setInterval(load,60000);
 </script>
 </body>
 </html>
