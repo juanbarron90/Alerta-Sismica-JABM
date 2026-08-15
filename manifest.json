@@ -1,0 +1,9 @@
+{
+  "name": "Alerta Sísmica JABM",
+  "short_name": "JABM Sismos",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#07131f",
+  "theme_color": "#07131f",
+  "lang": "es-MX"
+}
