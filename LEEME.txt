@@ -1,0 +1,14 @@
+ALERTA SÍSMICA JABM — ARCHIVOS PARA GITHUB
+
+Sube estos 3 archivos a la raíz de tu repositorio:
+- icon-192.png
+- icon-512.png
+- manifest.json
+
+IMPORTANTE:
+El manifest reemplaza al actual. Si tu index.html ya tiene:
+<link rel="manifest" href="manifest.json">
+no necesitas cambiarlo.
+
+Para el icono de iPhone, index.html debe incluir:
+<link rel="apple-touch-icon" href="icon-512.png">
