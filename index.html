@@ -1,38 +1,140 @@
-<!doctype html><html lang="es"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#07131f"><link rel="manifest" href="manifest.json">
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#071b2a">
+<link rel="manifest" href="manifest.json">
 <title>Alerta Sísmica JABM</title>
 <style>
-body{margin:0;background:#07131f;color:#f5f7fa;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif}
-header{text-align:center;padding:20px 12px;background:#091b2a;position:sticky;top:0}
-h1{margin:0;font-size:25px}header p,.muted{color:#9db1c0;font-size:12px}
-main{max-width:760px;margin:auto;padding:10px 14px}.card{background:#0d2131;border:1px solid #27465b;border-radius:16px;padding:14px;margin:10px 0}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{text-align:center;background:#081a28;border-radius:12px;padding:10px}.num{font-size:23px;font-weight:800}
-select,button{width:100%;padding:12px;border-radius:10px;border:1px solid #29485d;background:#091a28;color:white;font-size:15px}button{background:#176b91;border:0;font-weight:700;margin-top:8px}
-.controls{display:grid;grid-template-columns:1fr 1fr;gap:8px}.event{padding:12px 0;border-bottom:1px solid #1e3a4d}.row{display:flex;justify-content:space-between;gap:8px}.mag{font-size:21px;font-weight:900}.m5{color:#ffd35a}.m6{color:#ff9f43}.m7{color:#ff5757}.place{font-weight:700}.meta{color:#9db1c0;font-size:12px;margin-top:4px}.badge{display:inline-block;padding:4px 8px;border-radius:20px;background:#5b4315;color:#ffd35a;font-size:11px;font-weight:800;margin-top:5px}
-.notice{line-height:1.5;color:#9db1c0;font-size:12px}.signal{font-size:15px}footer{text-align:center;color:#718999;font-size:11px;padding:20px}
-</style></head><body>
-<header><h1>🌎 Alerta Sísmica JABM</h1><p>Monitoreo de sismos y terremotos · Datos USGS</p></header>
+:root{--bg:#061725;--panel:#0c2233;--panel2:#081b2a;--line:#17425d;--text:#f4f7fa;--muted:#9eb3c3;--accent:#2384b5;--danger:#ef5350;--warn:#ff9f1c;--ok:#46c36a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{text-align:center;padding:34px 18px 28px;background:#071b2a}header h1{font-size:32px;margin:0 0 12px}header p{margin:0;color:var(--muted);font-size:16px}
+main{max-width:900px;margin:auto;padding:18px 16px 50px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;background:var(--panel);border:2px solid var(--line);border-radius:24px;padding:12px;margin-bottom:16px}.stat{background:var(--panel2);border-radius:18px;text-align:center;padding:16px 6px}.stat b{display:block;font-size:29px}.stat span{color:var(--muted);font-size:14px}
+.card{background:var(--panel);border:2px solid var(--line);border-radius:24px;padding:22px;margin-bottom:16px}.card h2{margin:0 0 18px;font-size:25px}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:12px}.control label{display:block;color:var(--muted);font-size:13px;margin:0 0 6px}.control select,.control button{width:100%;min-height:54px;border-radius:16px;border:2px solid #22536f;background:#071b2a;color:var(--text);padding:0 14px;font-size:17px}
+button{font-weight:700;cursor:pointer}.notify{margin-top:12px;background:#2183b3;border-color:#2183b3!important}.notify.active{background:#237b45;border-color:#237b45!important}
+.note{color:var(--muted);font-size:13px;line-height:1.45;margin-top:12px}.signal{display:flex;gap:12px;align-items:flex-start}.dot{width:18px;height:18px;border-radius:50%;background:var(--warn);margin-top:5px;box-shadow:0 0 14px #ff9f1c}
+.event{border-top:1px solid #1b4258;padding:16px 0}.event:first-child{border-top:0}.event h3{margin:0 0 8px;font-size:18px}.chips{display:flex;flex-wrap:wrap;gap:7px;margin:9px 0}.chip{background:#071b2a;border:1px solid #24536b;border-radius:999px;padding:6px 9px;font-size:13px;color:#d7e4ec}.m{font-size:22px;font-weight:800}.m7{color:#ff6b61}.m6{color:#ffb347}.m5{color:#ffd166}.detail{color:var(--muted);font-size:14px;line-height:1.55}.event a{color:#72c9ff;text-decoration:none;font-weight:600}
+.empty{color:var(--muted);text-align:center;padding:20px 0}.refresh{font-size:13px;color:var(--muted);text-align:center;margin:10px}.footer{color:#7891a3;font-size:12px;text-align:center;line-height:1.5}
+@media(max-width:600px){.stats{gap:7px}.stat{padding:13px 3px}.stat b{font-size:25px}.controls{grid-template-columns:1fr}header h1{font-size:29px}}
+</style>
+</head>
+<body>
+<header>
+<h1>🌎 Alerta Sísmica JABM</h1>
+<p>Monitoreo de sismos y terremotos · Datos USGS</p>
+</header>
 <main>
-<section class="card"><div class="stats">
-<div class="stat"><div class="num" id="total">—</div><div class="muted">M4.5+ · 24 h</div></div>
-<div class="stat"><div class="num" id="m6">—</div><div class="muted">M6+ · 24 h</div></div>
-<div class="stat"><div class="num" id="m7">—</div><div class="muted">M7+ · 24 h</div></div></div></section>
-<section class="card"><h3>🔔 Filtros</h3><div class="controls">
-<select id="minmag"><option value="4.5">M4.5+</option><option value="5">M5+</option><option value="6" selected>M6+</option><option value="7">M7+</option></select>
-<select id="region"><option value="world">🌎 Mundo</option><option value="mexico">🇲🇽 México</option><option value="central">🌎 Centroamérica</option><option value="costa">🇨🇷 Costa Rica</option><option value="nicaragua">🇳🇮 Nicaragua</option></select></div>
-<button id="notify">🔔 Activar avisos mientras la app está abierta</button></section>
-<section class="card"><h3>📊 Señal experimental</h3><div id="signal" class="signal">Calculando…</div>
-<p class="notice">Esta señal resume actividad reciente. <b>No predice</b> cuándo, dónde o con qué magnitud ocurrirá un terremoto.</p></section>
-<section class="card"><h3>🛰️ Últimos eventos</h3><div id="events">Cargando…</div></section>
-<section class="card"><h3>🔬 Investigación JABM</h3><p class="notice">M5+/M6+/M7+/M8+, profundidad, agrupamientos, placas, fallas, volcanismo, tsunamis y comparación con el ciclo experimental ≈2.35 años.</p></section>
-</main><footer>Fuente principal: USGS Earthquake Hazards Program · Actualización aproximada cada 60 s mientras está abierta.</footer>
+<section class="stats">
+<div class="stat"><b id="count45">—</b><span>M4.5+ · 24 h</span></div>
+<div class="stat"><b id="count6">—</b><span>M6+ · 24 h</span></div>
+<div class="stat"><b id="count7">—</b><span>M7+ · 24 h</span></div>
+</section>
+
+<section class="card">
+<h2>🔔 Filtros y avisos</h2>
+<div class="controls">
+<div class="control"><label>Magnitud mínima</label>
+<select id="mag">
+<option value="4.5">M4.5+</option><option value="5">M5+</option><option value="6" selected>M6+</option><option value="7">M7+</option><option value="8">M8+</option>
+</select></div>
+<div class="control"><label>Zona</label>
+<select id="region">
+<option value="world" selected>🌎 Mundo</option><option value="mexico">🇲🇽 México</option><option value="nicaragua">🇳🇮 Nicaragua</option><option value="central">🌎 Centroamérica</option><option value="caribbean">🌊 Caribe</option>
+</select></div>
+</div>
+<button id="notify" class="notify">🔔 Activar avisos mientras la app está abierta</button>
+<div class="note">Los avisos de esta versión se generan con terremotos reales reportados por USGS mientras esta página permanece abierta. No predicen terremotos. Para avisos con la app cerrada necesitaremos después un servicio de notificaciones push.</div>
+</section>
+
+<section class="card">
+<h2>📊 Señal experimental</h2>
+<div class="signal"><div class="dot"></div><div><div id="signalTitle">Actividad reciente elevada</div><div class="note">Esta señal resume actividad reciente según el filtro. <b>No predice</b> cuándo, dónde o con qué magnitud ocurrirá un terremoto.</div></div></div>
+</section>
+
+<section class="card">
+<h2>🌐 Últimos eventos</h2>
+<div id="events"><div class="empty">Cargando datos USGS…</div></div>
+<div id="refresh" class="refresh"></div>
+</section>
+
+<div class="footer">Fuente: USGS Earthquake Catalog / GeoJSON Feed · La información puede actualizarse o revisarse después del primer reporte.</div>
+</main>
+
 <script>
-const FEED='https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_day.geojson';let data=[];
-function region(s,r){s=(s||'').toLowerCase();if(r==='world')return true;if(r==='mexico')return /mexico|méxico|chiapas|oaxaca|guerrero|baja california/.test(s);if(r==='central')return /costa rica|nicaragua|el salvador|honduras|guatemala|panama|panamá|belize|belice/.test(s);if(r==='costa')return /costa rica|puntarenas|limon|limón|guanacaste|san jose|san josé|cartago|alajuela|heredia/.test(s);if(r==='nicaragua')return /nicaragua|managua|masaya|león|leon|rivas|chinandega/.test(s)}
-function paint(){let min=+minmag.value,r=region.value,ev=data.filter(e=>e.properties.mag>=min&&region(e.properties.place,r)).sort((a,b)=>b.properties.time-a.properties.time);
-events.innerHTML=ev.slice(0,30).map(e=>{let p=e.properties,c=e.geometry.coordinates,d=new Date(p.time),cl=p.mag>=7?'m7':p.mag>=6?'m6':'m5';return `<div class="event"><div class="row"><div><span class="mag ${cl}">M${p.mag.toFixed(1)}</span> <span class="place">${p.place||'Ubicación no disponible'}</span></div><span class="meta">${d.toLocaleString('es-MX',{dateStyle:'short',timeStyle:'short'})}</span></div><div class="meta">Profundidad: ${(c[2]||0).toFixed(1)} km · ${p.magType||''} ${p.tsunami?'🌊 TSUNAMI':''}</div></div>`}).join('')||'<p class="notice">Sin eventos para el filtro.</p>';
-total.textContent=data.length;m6.textContent=data.filter(e=>e.properties.mag>=6).length;m7.textContent=data.filter(e=>e.properties.mag>=7).length;let n=data.filter(e=>e.properties.mag>=5).length;signal.innerHTML=n>=18?'🟠 Actividad reciente elevada':n>=10?'🟡 Actividad reciente moderada':'🟢 Actividad reciente dentro de la variabilidad observada'}
-async function load(){try{let j=await (await fetch(FEED,{cache:'no-store'})).json();data=j.features||[];paint()}catch(e){events.innerHTML='<p class="notice">No se pudo actualizar el USGS. Revisa tu conexión.</p>'}}
-minmag.onchange=paint;region.onchange=paint;notify.onclick=async()=>{if(!('Notification'in window)){alert('Este navegador no admite avisos web.');return}let p=await Notification.requestPermission();alert(p==='granted'?'Avisos activados mientras la app está abierta.':'Permiso no concedido.')};load();setInterval(load,60000);
-</script></body></html>
+const FEED="https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
+let allEvents=[]; let notified=new Set(); let notifications=false;
+
+const $=id=>document.getElementById(id);
+function regionOK(place,region){
+  const p=(place||"").toLowerCase();
+  if(region==="world") return true;
+  if(region==="mexico") return p.includes("mexico")||p.includes("méxico");
+  if(region==="nicaragua") return p.includes("nicaragua");
+  if(region==="central") return ["mexico","méxico","guatemala","belize","honduras","el salvador","nicaragua","costa rica","panama","panamá"].some(x=>p.includes(x));
+  if(region==="caribbean") return ["puerto rico","dominican","república dominicana","cuba","haiti","jamaica","caribbean","caribe"].some(x=>p.includes(x));
+  return true;
+}
+function magClass(m){return m>=7?"m7":m>=6?"m6":"m5"}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function formatTime(t){return new Date(t).toLocaleString("es-MX",{dateStyle:"medium",timeStyle:"short"})}
+function render(){
+  const min=parseFloat($("mag").value), reg=$("region").value;
+  const filtered=allEvents.filter(e=>(e.properties.mag??-99)>=min && regionOK(e.properties.place,reg))
+    .sort((a,b)=>b.properties.time-a.properties.time);
+  $("events").innerHTML=filtered.length?filtered.slice(0,30).map(e=>{
+    const p=e.properties, c=e.geometry?.coordinates||[];
+    const [lon,lat,depth]=c; const m=p.mag;
+    return `<article class="event">
+      <h3><span class="m ${magClass(m)}">M${m?.toFixed(1)}</span> · ${esc(p.place||"Ubicación no disponible")}</h3>
+      <div class="chips">
+        <span class="chip">📍 Lat ${Number(lat).toFixed(3)}°</span>
+        <span class="chip">🌐 Lon ${Number(lon).toFixed(3)}°</span>
+        <span class="chip">⬇️ Prof. ${Number(depth).toFixed(1)} km</span>
+        <span class="chip">📐 ${esc(p.magType||"magnitud")}</span>
+        ${p.tsunami?'<span class="chip">🌊 Posible tsunami</span>':""}
+        ${p.alert?`<span class="chip">⚠️ Alert: ${esc(p.alert)}</span>`:""}
+      </div>
+      <div class="detail">🕒 ${formatTime(p.time)} · Actualizado ${formatTime(p.updated)}</div>
+      <a href="${esc(p.url)}" target="_blank" rel="noopener">Ver evento completo en USGS →</a>
+    </article>`;
+  }).join(""):`<div class="empty">No hay eventos para este filtro en las últimas 24 horas.</div>`;
+  const last24=allEvents.filter(e=>e.properties.mag>=4.5).length;
+  $("count45").textContent=last24;
+  $("count6").textContent=allEvents.filter(e=>e.properties.mag>=6).length;
+  $("count7").textContent=allEvents.filter(e=>e.properties.mag>=7).length;
+  const high=allEvents.filter(e=>e.properties.mag>=min).length;
+  $("signalTitle").textContent=high>=5?"Actividad reciente elevada":high>=1?"Actividad reciente detectada":"Actividad reciente baja";
+}
+async function load(){
+  try{
+    const r=await fetch(FEED,{cache:"no-store"}); if(!r.ok) throw new Error("HTTP "+r.status);
+    const data=await r.json(); allEvents=data.features||[]; render();
+    $("refresh").textContent="Actualizado: "+new Date().toLocaleTimeString("es-MX");
+    checkNotifications();
+  }catch(err){
+    $("events").innerHTML='<div class="empty">No se pudieron cargar los datos USGS. Revisa tu conexión y vuelve a intentar.</div>';
+  }
+}
+function checkNotifications(){
+  if(!notifications || !("Notification" in window) || Notification.permission!=="granted") return;
+  const min=parseFloat($("mag").value), reg=$("region").value;
+  allEvents.filter(e=>e.properties.mag>=min && regionOK(e.properties.place,reg)).forEach(e=>{
+    if(!notified.has(e.id)){notified.add(e.id);
+      new Notification(`🚨 Sismo M${e.properties.mag?.toFixed(1)}`,{body:`${e.properties.place||"Ubicación desconocida"} · Prof. ${e.geometry.coordinates[2].toFixed(1)} km`});
+    }
+  });
+}
+$("mag").addEventListener("change",()=>{render();checkNotifications()});
+$("region").addEventListener("change",()=>{render();checkNotifications()});
+$("notify").addEventListener("click",async()=>{
+  if(!("Notification" in window)){alert("Este navegador no permite notificaciones.");return}
+  const p=await Notification.requestPermission();
+  if(p==="granted"){notifications=true;$("notify").textContent="🔔 Avisos ACTIVADOS · cambia el filtro para definir el umbral";$("notify").classList.add("active");checkNotifications();}
+  else alert("Debes permitir las notificaciones en el navegador para activarlas.");
+});
+load(); setInterval(load,60000);
+</script>
+</body>
+</html>

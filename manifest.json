@@ -1,9 +1,10 @@
 {
-  "name": "Alerta Sísmica JABM",
-  "short_name": "JABM Sismos",
-  "start_url": "./index.html",
-  "display": "standalone",
-  "background_color": "#07131f",
-  "theme_color": "#07131f",
-  "lang": "es-MX"
+  "name":"Alerta Sísmica JABM",
+  "short_name":"Alerta JABM",
+  "start_url":"./",
+  "display":"standalone",
+  "background_color":"#061725",
+  "theme_color":"#071b2a",
+  "lang":"es-MX",
+  "description":"Monitoreo de actividad sísmica con datos del USGS."
 }
