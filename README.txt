@@ -1,14 +1,17 @@
-ALERTA SÍSMICA JABM — PROTOTIPO 1
+# Alerta Sísmica JABM — versión con selección de países
 
-Abre index.html con conexión a internet.
-Usa el feed GeoJSON en tiempo real del USGS.
+Archivos para subir al repositorio GitHub Pages:
+- `index.html` — aplicación actualizada.
+- `manifest.json` — configuración PWA.
+- `icon-512.png` — icono de la app.
 
-La app:
-- muestra M4.5+, M6+ y M7+ de las últimas 24 h;
-- permite filtrar Mundo, México, Centroamérica, Costa Rica y Nicaragua;
-- muestra profundidad, ubicación y tsunami;
-- actualiza aproximadamente cada 60 segundos mientras está abierta;
-- incluye una señal experimental de actividad reciente.
+Cambios principales:
+- Magnitud mínima desde M3+ hasta M8+.
+- Selección de uno o varios países.
+- Botón “Todos” y “Limpiar”.
+- Buscador de países.
+- La selección se guarda en el iPhone con localStorage.
+- Los eventos y avisos dentro de la página respetan la magnitud y los países seleccionados.
+- Los detalles del evento muestran magnitud, ubicación, latitud, longitud, profundidad, tipo de magnitud, tsunami/alerta cuando USGS los reporta y enlace al evento.
 
-IMPORTANTE: no predice terremotos. Para avisos fiables en segundo plano en iPhone
-hace falta una versión publicada con backend y notificaciones push.
+Nota: esta versión todavía genera avisos del navegador mientras la página está abierta. Las notificaciones Push con la app cerrada requieren configurar el servicio Push/backend en un siguiente paso.

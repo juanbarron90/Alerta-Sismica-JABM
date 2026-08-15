@@ -19,6 +19,8 @@ button{font-weight:700;cursor:pointer}.notify{margin-top:12px;background:#2183b3
 .event{border-top:1px solid #1b4258;padding:16px 0}.event:first-child{border-top:0}.event h3{margin:0 0 8px;font-size:18px}.chips{display:flex;flex-wrap:wrap;gap:7px;margin:9px 0}.chip{background:#071b2a;border:1px solid #24536b;border-radius:999px;padding:6px 9px;font-size:13px;color:#d7e4ec}.m{font-size:22px;font-weight:800}.m8{color:#ff4d5e}.m7{color:#ff6b61}.m6{color:#ffb347}.m5{color:#ffd166}.m4{color:#b9d8ff}.detail{color:var(--muted);font-size:14px;line-height:1.55}.event a{color:#72c9ff;text-decoration:none;font-weight:600}
 .empty{color:var(--muted);text-align:center;padding:20px 0}.refresh{font-size:13px;color:var(--muted);text-align:center;margin:10px}.footer{color:#7891a3;font-size:12px;text-align:center;line-height:1.5}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:flex-end;justify-content:center;z-index:50;padding:0}.modal.open{display:flex}.modalbox{width:min(900px,100%);max-height:88vh;overflow:auto;background:var(--panel);border:2px solid var(--line);border-radius:26px 26px 0 0;padding:20px 18px 30px;box-shadow:0 -10px 40px rgba(0,0,0,.35)}.modalhead{display:flex;align-items:center;justify-content:space-between;gap:12px}.modalhead h2{margin:0;font-size:23px}.close{width:44px;height:44px;border-radius:50%;border:2px solid #2b5870;background:#071b2a;color:#fff;font-size:24px}.summary{color:var(--muted);margin:8px 0 14px}.countryHint{margin-top:8px;font-size:12px;color:var(--muted)}
+.countryBox{border:2px solid #22536f;border-radius:16px;background:#071b2a;padding:10px;margin-top:6px}.countryTop{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}.countryTop button{border:1px solid #2b6687;background:#0c2a3d;color:#fff;border-radius:10px;padding:8px 10px;font-size:13px}.countrySearch{width:100%;min-height:44px;border-radius:12px;border:2px solid #22536f;background:#061725;color:#fff;padding:0 12px;font-size:16px;margin-bottom:10px}.countryList{max-height:280px;overflow:auto;display:grid;grid-template-columns:1fr 1fr;gap:6px}.countryItem{display:flex;align-items:center;gap:8px;padding:8px;border-radius:10px;background:#0a2232;font-size:14px}.countryItem input{width:18px;height:18px;accent-color:#2384b5}.selectedSummary{margin-top:9px;color:#72c9ff;font-size:13px;font-weight:600}
+@media(max-width:600px){.countryList{grid-template-columns:1fr}}
 @media(max-width:600px){.stats{gap:7px}.stat{padding:13px 3px}.stat b{font-size:25px}.controls{grid-template-columns:1fr}header h1{font-size:29px}}
 </style>
 </head>
@@ -41,9 +43,14 @@ button{font-weight:700;cursor:pointer}.notify{margin-top:12px;background:#2183b3
 <select id="mag">
 <option value="3">M3+</option><option value="3.5">M3.5+</option><option value="4">M4+</option><option value="4.5" selected>M4.5+</option><option value="5">M5+</option><option value="5.5">M5.5+</option><option value="6">M6+</option><option value="6.5">M6.5+</option><option value="7">M7+</option><option value="7.5">M7.5+</option><option value="8">M8+</option>
 </select></div>
-<div class="control"><label>Zona / país</label>
-<select id="region"></select>
-<div class="countryHint">Mundo muestra todos los países. El filtro usa la ubicación reportada por USGS.</div>
+<div class="control"><label>🌎 Países que quiero vigilar</label>
+<div class="countryBox">
+<div class="countryTop"><button id="allCountries" type="button">🌎 Todos</button><button id="clearCountries" type="button">Limpiar</button></div>
+<input id="countrySearch" class="countrySearch" type="search" placeholder="Buscar país…" autocomplete="off">
+<div id="countryList" class="countryList"></div>
+<div id="selectedSummary" class="selectedSummary">🌎 Todos los países</div>
+</div>
+<div class="countryHint">Puedes seleccionar uno o varios países. El filtro usa la ubicación reportada por USGS.</div>
 </div>
 </div>
 <button id="notify" class="notify">🔔 Activar avisos mientras la app está abierta</button>
@@ -113,9 +120,16 @@ function eventHTML(e){
   </article>`;
 }
 
+function selectedCountries(){return [...document.querySelectorAll('#countryList input[type=checkbox]:checked')].map(x=>x.value)}
+function countryOK(place){
+  const selected=selectedCountries();
+  if(!selected.length || selected.includes('world')) return true;
+  const p=normalize(place);
+  return selected.some(id=>{const item=countries.find(x=>x[0]===id); return item && item[2].split('|').some(x=>p.includes(normalize(x)));});
+}
 function currentFiltered(){
-  const min=parseFloat($("mag").value), reg=$("region").value;
-  return allEvents.filter(e=>(e.properties.mag??-99)>=min && regionOK(e.properties.place,reg))
+  const min=parseFloat($("mag").value);
+  return allEvents.filter(e=>(e.properties.mag??-99)>=min && countryOK(e.properties.place))
     .sort((a,b)=>b.properties.time-a.properties.time);
 }
 
@@ -159,8 +173,8 @@ async function load(){
 
 function checkNotifications(){
   if(!notifications || !("Notification" in window) || Notification.permission!=="granted") return;
-  const min=parseFloat($("mag").value), reg=$("region").value;
-  allEvents.filter(e=>e.properties.mag>=min && regionOK(e.properties.place,reg)).forEach(e=>{
+  const min=parseFloat($("mag").value);
+  allEvents.filter(e=>e.properties.mag>=min && countryOK(e.properties.place)).forEach(e=>{
     if(!notified.has(e.id)){
       notified.add(e.id);
       const depth=e.geometry?.coordinates?.[2];
@@ -171,12 +185,39 @@ function checkNotifications(){
   });
 }
 
-function initCountries(){
-  $("region").innerHTML=countries.map(x=>`<option value="${x[0]}" ${x[0]==="world"?"selected":""}>${x[1]}</option>`).join("");
+function renderCountries(filter=""){
+  const q=normalize(filter);
+  const saved=JSON.parse(localStorage.getItem("jabmCountries")||"[\"world\"]");
+  $("countryList").innerHTML=countries.filter(x=>x[0]==="world"||!q||normalize(x[1]).includes(q)).map(x=>{
+    const checked=saved.includes(x[0]);
+    return `<label class="countryItem"><input type="checkbox" value="${x[0]}" ${checked?"checked":""}> <span>${x[1]}</span></label>`;
+  }).join("");
+  document.querySelectorAll('#countryList input').forEach(cb=>cb.addEventListener('change',()=>{
+    let vals=JSON.parse(localStorage.getItem('jabmCountries')||"[]");
+    if(cb.value==='world' && cb.checked) vals=['world'];
+    else {
+      vals=vals.filter(x=>x!=='world');
+      if(cb.checked && !vals.includes(cb.value)) vals.push(cb.value);
+      if(!cb.checked) vals=vals.filter(x=>x!==cb.value);
+    }
+    localStorage.setItem('jabmCountries',JSON.stringify(vals));
+    renderCountries($("countrySearch").value); updateCountrySummary(); render(); checkNotifications();
+  }));
 }
-
+function updateCountrySummary(){
+  const vals=JSON.parse(localStorage.getItem('jabmCountries')||"[\"world\"]");
+  if(!vals.length||vals.includes('world')){$("selectedSummary").textContent='🌎 Todos los países';return;}
+  const names=vals.map(id=>{const x=countries.find(c=>c[0]===id);return x?x[1]:id;});
+  $("selectedSummary").textContent=names.length<=3?('🔔 '+names.join(' · ')):('🔔 '+names.slice(0,3).join(' · ')+` + ${names.length-3} más`);
+}
+function initCountries(){
+  if(!localStorage.getItem('jabmCountries')) localStorage.setItem('jabmCountries',JSON.stringify(['world']));
+  renderCountries(); updateCountrySummary();
+}
+$("countrySearch").addEventListener("input",e=>renderCountries(e.target.value));
+$("allCountries").addEventListener("click",()=>{localStorage.setItem('jabmCountries',JSON.stringify(['world']));renderCountries($("countrySearch").value);updateCountrySummary();render();checkNotifications()});
+$("clearCountries").addEventListener("click",()=>{localStorage.setItem('jabmCountries',JSON.stringify([]));renderCountries($("countrySearch").value);updateCountrySummary();render();checkNotifications()});
 $("mag").addEventListener("change",()=>{render();checkNotifications()});
-$("region").addEventListener("change",()=>{render();checkNotifications()});
 $("stat45").addEventListener("click",()=>openStat(4.5,"📊 Eventos M4.5+ · 24 h"));
 $("stat6").addEventListener("click",()=>openStat(6,"📊 Eventos M6+ · 24 h"));
 $("stat7").addEventListener("click",()=>openStat(7,"📊 Eventos M7+ · 24 h"));
