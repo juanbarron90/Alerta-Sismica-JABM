@@ -1,26 +1,25 @@
-# Alerta Sísmica JABM
+# Alerta Sísmica JABM — versión con Investigación
 
-Versión actualizada para GitHub Pages.
+Esta versión conserva el monitoreo de USGS, filtros de magnitud, selección de países, avisos del navegador, detalle de eventos, S.O.S. y sección Más, y añade una sección **Investigación**.
 
-## Incluye
-- Diseño oscuro moderno tipo app móvil.
-- Datos sísmicos en tiempo real desde USGS.
-- Tarjetas M4.5+, M6+ y M7+ de las últimas 24 horas.
-- Filtro de magnitud desde M3 hasta M8+.
-- Selección de uno, varios o todos los países para eventos y avisos.
-- Detalle de cada sismo con magnitud, ubicación, profundidad, latitud, longitud, tipo de magnitud, ID, estado, tsunami, alerta y significancia.
-- **S.O.S. como ventana emergente:** permite elegir país y muestra botones **Llamar** para policía, bomberos y emergencias.
-- **Más como ventana emergente:** información del creador, fuentes de datos, avisos y funcionamiento.
-- Preferencias guardadas en el dispositivo.
-- Solicitud y control de notificaciones del navegador.
+## Investigación integrada
+- Resumen 2026 con los valores del estudio al 14 de agosto de 2026: 88 M6+, 11 M7+, objetivo central ≈125 M6+ y ≈15 M7+.
+- Comparación actual vs escenario central 2026.
+- Histórico M6+ desde 2000 usando la API FDSN de USGS.
+- Distribución mensual de M6+ y M7+ observados en 2026.
+- Próximo mes (septiembre 2026): ritmo teórico de ≈8 M6+ y ≈1 M7+ por mes para el escenario central del estudio; está marcado como ritmo teórico, no predicción.
+- Proyección experimental 2027 con rangos y ventanas del material de investigación:
+  - M7+: 12–18, Mar–Ago.
+  - M6+: 50–70, Feb–Ago.
+  - M5+: 150–250, Ene–Sep.
+  - Enjambres: aumento Mar–Jul.
+  - Ventanas de actividad relativa según las láminas de investigación.
+- Advertencias metodológicas visibles para separar datos observados de proyecciones experimentales.
 
-## S.O.S.
-Incluye México, Nicaragua, Costa Rica, Estados Unidos, Guatemala, El Salvador, Honduras, Colombia, Chile, Japón, Indonesia, Perú y Ecuador.
+## Publicar en GitHub Pages
+Sube `index.html`, `manifest.json`, `icon-192.png` e `icon-512.png` a la rama `main` y publica GitHub Pages desde esa rama.
 
-**Importante:** los números de emergencia deben verificarse con fuentes oficiales antes de depender de ellos durante una emergencia.
+## Importante
+Una página estática de GitHub Pages no garantiza notificaciones push cuando la aplicación está cerrada. Esta versión conserva los avisos del navegador cuando el entorno puede ejecutarlos; para push fiable en segundo plano se requiere un servicio push/backend.
 
-## GitHub Pages
-Sube `index.html`, `manifest.json`, `icon-192.png` y `icon-512.png` a la rama `main` y publica GitHub Pages desde esa rama.
-
-## Notificaciones
-Una página estática de GitHub Pages no puede garantizar notificaciones push cuando la web está completamente cerrada. Para alertas fiables en segundo plano se necesita un servicio Web Push/backend o una función serverless.
+Las proyecciones de la sección Investigación son experimentales y no predicen terremotos individuales.
